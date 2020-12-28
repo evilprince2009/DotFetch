@@ -5,8 +5,8 @@
 .VERSION 1.2.1
 .GUID 1c26142a-da43-4125-9d70-97555cbb1752
 .DESCRIPTION Winfetch is a command-line system information utility for Windows written in PowerShell.
-.AUTHOR lptstr
-.PROJECTURI https://github.com/ppadial/winfetch
+.AUTHOR evilprince2009
+.PROJECTURI https://github.com/evilprince2009/Posh-Winfetch-remake
 .COMPANYNAME
 .COPYRIGHT
 .TAGS
