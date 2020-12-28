@@ -1,0 +1,15 @@
+title: Posh Winfetch
+author: Evilprince2009
+avatar: "/resource/avatar.jpg"
+round-avatar: true
+navbar-links:
+  About Me: "aboutme"
+  Author's home: "https://www.linkedin.com/in/evilprince2009"
+social-network-links:
+  email: "evilprince2009@gmail.com"
+  facebook: evilprince2009
+  github: evilprince2009
+  linkedin: in/evilprince2009
+share-links-active:
+  facebook: true
+  linkedin: true
