@@ -2,7 +2,9 @@ Posh-Winfetch is a command-line system information utility written in PowerShell
 
 ![Image](https://raw.githubusercontent.com/evilprince2009/Posh-Winfetch-remake/main/Screenshot%20(53).png)
 
-### This is how it looks like
+#### This is how it looks like
+
+### [Download](https://github.com/evilprince2009/Posh-Winfetch-remake/)
 
 I will be updating this page with installation steps letter on.
 
