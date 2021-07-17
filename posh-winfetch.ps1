@@ -141,9 +141,11 @@ else {
     0xFFF
 }
 
+# ===== OS =====
+$strings.os = (Get-WmiObject -class Win32_OperatingSystem).Caption.ToString().TrimStart('Microsoft ')
 
-# ===== IMAGE =====
-$img = if (-not $image -and -not $noimage.IsPresent) {
+# ===== LOGO =====
+$img = if (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Windows 10') {
     @(
             "                         ....::::       ",
             "                 ....::::::::::::       ",
@@ -165,7 +167,30 @@ $img = if (-not $image -and -not $noimage.IsPresent) {
             "                                        ",
             "                                        ";
     )
+} elseif (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Windows 11') {
+    @(
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            "................ ................       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: :EVILPRINCE2009:       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            ":::::::::::::::: ::::::::::::::::       ",
+            "                                        ",
+            "                                        ",
+            "                                        ";
+    )
 }
+
 elseif (-not $noimage.IsPresent -and $image) {
     if (-not (Get-Command -Name magick -ErrorAction Ignore)) {
         Write-Output 'error: Imagemagick must be installed to print custom images.' -f red
@@ -217,11 +242,7 @@ else {
     @()
 }
 
-
-# ===== OS =====
-$strings.os = (Get-WmiObject -class Win32_OperatingSystem).Caption.ToString().TrimStart('Microsoft ')
-
-
+# ======== OS ========
 #$strings.os = if ($configuration.HasFlag([Configuration]::Show_OS)) {
  #   if ($IsWindows -or $PSVersionTable.PSVersion.Major -eq 5) {
   #      [Environment]::OSVersion.ToString().TrimStart('Microsoft ')
