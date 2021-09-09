@@ -18,7 +18,7 @@ Follow these simple steps to install Posh-Winfetch:
 - Install `posh-git` from https://www.powershellgallery.com/packages/posh-git/0.7.1 and `oh-my-posh` from https://www.powershellgallery.com/packages/oh-my-posh/2.0.496 , installing the exact version provided is required in order to work this script properly.
 - Download the files from provided link and extract them.
 - Put the `posh-winfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
-- Put this directory 'C:\Program Files\WindowsPowerShell\Scripts' into path under Environment Variables.
+- Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
 - Now open PowerShell & type `notepad $profile`.
 - Put `posh-winfetch` inside the file without quotation marks and save.
 - Re-Launch PowerShell & you are good to go.
