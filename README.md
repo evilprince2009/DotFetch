@@ -15,7 +15,7 @@ Posh-Winfetch is a command-line system information utility written in PowerShell
 Follow these simple steps to install Posh-Winfetch:
 
 - Set your execution policy to RemoteSigned by running `Set-ExecutionPolicy RemoteSigned` on an Administrative instance of PowerShell. This is required to run Posh-Winfetch.
-- Install `posh-git` from _[here](https://www.powershellgallery.com/packages/posh-git/0.7.1)_ and `oh-my-posh` from https://www.powershellgallery.com/packages/oh-my-posh/2.0.496 , installing the exact version provided is required in order to work this script properly.
+- Install `posh-git` from _[here](https://www.powershellgallery.com/packages/posh-git/0.7.1)_ and `oh-my-posh` from _[here](https://www.powershellgallery.com/packages/oh-my-posh/2.0.496)_. Installing the exact version provided is required in order to work this script properly.
 - Download the files from provided link and extract them.
 - Put the `posh-winfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
