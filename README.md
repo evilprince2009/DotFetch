@@ -27,7 +27,7 @@ Write-Host("                        =========> Wellcome || Windows PowerShell <=
 Import-Module posh-git
 Import-Module oh-my-posh
 Set-Theme Operator
-winfetch
+posh-winfetch
 ```
 
 - Re-Launch PowerShell & you are good to go.
