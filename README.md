@@ -20,7 +20,16 @@ Follow these simple steps to install Posh-Winfetch:
 - Put the `posh-winfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
 - Now open PowerShell & type `notepad $profile`.
-- Put `posh-winfetch` inside the file without quotation marks and save.
+- Put below lines inside the file without quotation marks and save.
+
+```
+Write-Host("                        =========> Wellcome || Windows PowerShell <=========")
+Import-Module posh-git
+Import-Module oh-my-posh
+Set-Theme Operator
+winfetch
+```
+
 - Re-Launch PowerShell & you are good to go.
 
 #### [Ibne Nahian](https://evilprince2009.netlify.app/)
