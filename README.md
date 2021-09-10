@@ -20,7 +20,7 @@ Follow these simple steps to install Posh-Winfetch:
 - Put the `posh-winfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
 - Now open PowerShell & type `notepad $profile`.
-- Put below lines inside the file without quotation marks and save.
+- Put below lines inside the file and save.
 
 ```
 Write-Host("                        =========> Wellcome || Windows PowerShell <=========")
