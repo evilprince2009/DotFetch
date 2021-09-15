@@ -106,7 +106,6 @@ $strings = @{
     gpu         = ''
     memory      = ''
     disk_c      = ''
-    #disk_d      = ''
     pwsh        = ''
     pkgs        = ''
     admin       = ''
@@ -242,18 +241,6 @@ else {
     @()
 }
 
-# ======== OS ========
-#$strings.os = if ($configuration.HasFlag([Configuration]::Show_OS)) {
- #   if ($IsWindows -or $PSVersionTable.PSVersion.Major -eq 5) {
-  #      [Environment]::OSVersion.ToString().TrimStart('Microsoft ')
-   # } else {
-    #    ($PSVersionTable.OS).TrimStart('Microsoft ')
-    #}
-#} else {
- #   $disabled
-#}
-
-
 # ===== HOSTNAME =====
 $strings.hostname = $Env:COMPUTERNAME
 
@@ -364,17 +351,6 @@ $strings.disk_c = if ($configuration.HasFlag([Configuration]::Show_Disk)) {
     $disabled
 }
 
-# ==== DISK USAGE D ====
-#$strings.disk_d = if ($configuration.HasFlag([Configuration]::Show_Disk)) {
- #   $disk = Get-CimInstance -ClassName Win32_LogicalDisk -Filter #'DeviceID="D:"'
-  #  $total = [math]::floor(($disk.Size / 1gb))
-   # $used = [math]::floor((($disk.FreeSpace - $total) / 1gb))
-    #$usage = [math]::floor(($used / $total * 100))
-    #("{0}GiB / {1}GiB ({2}%)" -f $used,$total,$usage)
-#} else {
- #   $disabled
-#}
-
 # ===== Running as Admin ? =====
 $current_thread = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 
@@ -450,7 +426,6 @@ $info.Add(@("CPU", $strings.cpu))
 $info.Add(@("GPU", $strings.gpu))
 $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
-#$info.Add(@("Disk (D:)", $strings.disk_d))
 $info.Add(@("Running as Admin", $strings.admin))
 $info.Add(@("Internet Access", $strings.connection))
 $info.Add(@("Battery state",$strings.battery))
