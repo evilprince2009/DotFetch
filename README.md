@@ -23,10 +23,10 @@ Follow these simple steps to install Posh-Winfetch:
 - Put below lines inside the file and save.
 
 ```
-Write-Host("                        =========> Wellcome || Windows PowerShell <=========")
 Import-Module posh-git
 Import-Module oh-my-posh
 Set-Theme Operator
+Write-Host("                        =========> Wellcome || Windows PowerShell <=========")
 posh-winfetch
 ```
 
