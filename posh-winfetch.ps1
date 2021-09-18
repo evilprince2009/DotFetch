@@ -93,6 +93,7 @@ if ($genconf.IsPresent) {
 # ===== VARIABLES =====
 $disabled = 'disabled'
 $strings = @{
+    ip_address = ''
     dashes      = ''
     img         = ''
     title       = ''
@@ -244,10 +245,8 @@ else {
 # ===== HOSTNAME =====
 $strings.hostname = $Env:COMPUTERNAME
 
-
 # ===== USERNAME =====
 $strings.username = [Environment]::UserName
-
 
 # ===== TITLE =====
 $strings.title = if ($configuration.HasFlag([Configuration]::Show_Title)) {
@@ -256,14 +255,12 @@ $strings.title = if ($configuration.HasFlag([Configuration]::Show_Title)) {
     $disabled
 }
 
-
 # ===== DASHES =====
 $strings.dashes = if ($configuration.HasFlag([Configuration]::Show_Dashes)) {
     -join $(for ($i = 0; $i -lt ('{0}@{1}' -f $strings['username', 'hostname']).Length; $i++) { '-' })
 } else {
     $disabled
 }
-
 
 # ===== COMPUTER =====
 $strings.computer = if ($configuration.HasFlag([Configuration]::Show_Computer)) {
@@ -272,7 +269,6 @@ $strings.computer = if ($configuration.HasFlag([Configuration]::Show_Computer)) 
 } else {
     $disabled
 }
-
 
 # ===== UPTIME =====
 $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
@@ -287,7 +283,6 @@ $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
 } else {
     $disabled
 }
-
 
 # ===== TERMINAL =====
 # this section works by getting
@@ -314,7 +309,6 @@ $strings.terminal = if ($configuration.HasFlag([Configuration]::Show_Terminal) -
     $disabled
 }
 
-
 # ===== CPU/GPU =====
 $strings.cpu = if ($configuration.HasFlag([Configuration]::Show_CPU)) {
     (Get-CimInstance -ClassName Win32_Processor).Name
@@ -328,7 +322,6 @@ $strings.gpu = if ($configuration.HasFlag([Configuration]::Show_GPU)) {
     $disabled
 }
 
-
 # ===== MEMORY =====
 $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
     $m = Get-CimInstance -ClassName Win32_OperatingSystem
@@ -338,7 +331,6 @@ $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
 } else {
     $disabled
 }
-
 
 # ===== DISK USAGE C =====
 $strings.disk_c = if ($configuration.HasFlag([Configuration]::Show_Disk)) {
@@ -356,7 +348,6 @@ $current_thread = New-Object Security.Principal.WindowsPrincipal([Security.Princ
 
 $strings.admin = $current_thread.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-
 # ===== POWERSHELL VERSION =====
 $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
     "PowerShell v$($PSVersionTable.PSVersion)"
@@ -365,25 +356,42 @@ $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
 }
 
 # ===== CONNECTION CHECKER =====
-
 function Get-Status {
     $status = "Offline"
     if ((Test-NetConnection -WarningAction silentlycontinue).PingSucceeded) {
         $status = (Test-NetConnection -WarningAction silentlycontinue).InterfaceAlias
     }
-    
     return $status
 }
 
 $strings.connection = Get-Status
 
-# ===== Kernel Version =====
+# ===== IP Address =====
+function Get-LocalIPAddress {
+    $address = '127.0.0.1'
+    if (Get-Status -ne 'Offline') {
+        $address = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Ethernet).IPAddress.ToString()
+    }
+    return $address
+}
 
+$strings.ip_address = Get-LocalIPAddress
+
+# ===== Kernel Version =====
 $strings.kernel = [Environment]::OSVersion.Version.ToString()
 
 # ===== Battery =====
-
-$strings.battery = Get-BatteryInfo
+function Connection-Status {
+    $battery = Get-WmiObject -Class Win32_Battery | Select-Object -First 1
+    $connection_buffer = $battery -ne $null -and $battery.BatteryStatus -eq 1
+    if ($connection_buffer) {
+        return 'Disconnected'
+    } else {
+        return 'Plugged in'
+    }
+}
+$connection_sign = Connection-Status
+$strings.battery = (Get-WmiObject win32_battery).estimatedChargeRemaining.ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
 $strings.pkgs = if ($configuration.HasFlag([Configuration]::Show_Pkgs)) {
@@ -407,7 +415,6 @@ $strings.pkgs = if ($configuration.HasFlag([Configuration]::Show_Pkgs)) {
     $disabled
 }
 
-
 # reset terminal sequences and display a newline
 write-output "${e}[0m"
 
@@ -428,7 +435,8 @@ $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
 $info.Add(@("Running as Admin", $strings.admin))
 $info.Add(@("Internet Access", $strings.connection))
-$info.Add(@("Battery state",$strings.battery))
+$info.Add(@("IP Address", $strings.ip_address))
+$info.Add(@("Power", $strings.battery))
 $info.Add(@("",""))
 $info.Add(@("", $colorBar))
 
