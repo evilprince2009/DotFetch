@@ -248,12 +248,14 @@ $strings.hostname = $Env:COMPUTERNAME
 # ===== USERNAME =====
 $strings.username = [Environment]::UserName
 
+
 # ===== TITLE =====
 $strings.title = if ($configuration.HasFlag([Configuration]::Show_Title)) {
     "${e}[1;34m{0}${e}[0m@${e}[1;34m{1}${e}[0m" -f $strings['username', 'hostname']
 } else {
     $disabled
 }
+
 
 # ===== DASHES =====
 $strings.dashes = if ($configuration.HasFlag([Configuration]::Show_Dashes)) {
@@ -262,6 +264,7 @@ $strings.dashes = if ($configuration.HasFlag([Configuration]::Show_Dashes)) {
     $disabled
 }
 
+
 # ===== COMPUTER =====
 $strings.computer = if ($configuration.HasFlag([Configuration]::Show_Computer)) {
     $compsys = Get-CimInstance -ClassName Win32_ComputerSystem
@@ -269,6 +272,7 @@ $strings.computer = if ($configuration.HasFlag([Configuration]::Show_Computer)) 
 } else {
     $disabled
 }
+
 
 # ===== UPTIME =====
 $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
@@ -283,6 +287,7 @@ $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
 } else {
     $disabled
 }
+
 
 # ===== TERMINAL =====
 # this section works by getting
@@ -322,6 +327,7 @@ $strings.gpu = if ($configuration.HasFlag([Configuration]::Show_GPU)) {
     $disabled
 }
 
+
 # ===== MEMORY =====
 $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
     $m = Get-CimInstance -ClassName Win32_OperatingSystem
@@ -331,6 +337,7 @@ $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
 } else {
     $disabled
 }
+
 
 # ===== DISK USAGE C =====
 $strings.disk_c = if ($configuration.HasFlag([Configuration]::Show_Disk)) {
@@ -348,6 +355,7 @@ $current_thread = New-Object Security.Principal.WindowsPrincipal([Security.Princ
 
 $strings.admin = $current_thread.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
+
 # ===== POWERSHELL VERSION =====
 $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
     "PowerShell v$($PSVersionTable.PSVersion)"
@@ -361,6 +369,7 @@ function Get-Status {
     if ((Test-NetConnection -WarningAction silentlycontinue).PingSucceeded) {
         $status = (Test-NetConnection -WarningAction silentlycontinue).InterfaceAlias
     }
+    
     return $status
 }
 
@@ -370,7 +379,7 @@ $strings.connection = Get-Status
 function Get-LocalIPAddress {
     $address = '127.0.0.1'
     if (Get-Status -ne 'Offline') {
-        $address = (Get-NetIPAddress -AddressFamily IPV4 -InterfaceAlias Ethernet).IPAddress.ToString()
+        $address = (Invoke-RestMethod ifconfig.me/ip).ToString()
     }
     return $address
 }
@@ -378,42 +387,96 @@ function Get-LocalIPAddress {
 $strings.ip_address = Get-LocalIPAddress
 
 # ===== Kernel Version =====
+
 $strings.kernel = [Environment]::OSVersion.Version.ToString()
 
 # ===== Battery =====
+
 function Connection-Status {
     $battery = Get-WmiObject -Class Win32_Battery | Select-Object -First 1
     $connection_buffer = $battery -ne $null -and $battery.BatteryStatus -eq 1
     if ($connection_buffer) {
-        return 'Disconnected'
+        return 'Unplugged'
     } else {
-        return 'Plugged in'
+        return 'Connected'
     }
 }
 $connection_sign = Connection-Status
 $strings.battery = (Get-WmiObject win32_battery).estimatedChargeRemaining.ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
-$strings.pkgs = if ($configuration.HasFlag([Configuration]::Show_Pkgs)) {
-    $chocopkg = if (Get-Command -Name choco -ErrorAction Ignore) {
-        (& clist -l)[-1].Split(' ')[0] - 1
+# $strings.pkgs = if ($configuration.HasFlag([Configuration]::Show_Pkgs)) {
+#     $chocopkg = if (Get-Command -Name choco -ErrorAction Ignore) {
+#         (& clist -l)[-1].Split(' ')[0] - 1
+#     }
+
+#     $scooppkg = if (Get-Command -Name scoop -ErrorAction Ignore) {
+#         $scoop = & scoop which scoop
+#         $scoopdir = (Resolve-Path "$(Split-Path -Path $scoop)\..\..\..").Path
+#         (Get-ChildItem -Path $scoopdir -Directory).Count - 1
+#     }
+
+#     $(if ($scooppkg) {
+#         "$scooppkg (scoop)"
+#     }
+#     if ($chocopkg) {
+#         "$chocopkg (choco)"
+#     }) -join ', '
+# } else {
+#     $disabled
+# }
+
+function Get-Packages {
+    $pkgs = @()
+
+    if ("winget" -in $ShowPkgs -and (Get-Command -Name winget -ErrorAction Ignore)) {
+        $wingetpkg = (winget list | Where-Object {$_.Trim("`n`r`t`b-\|/ ").Length -ne 0} | Measure-Object).Count - 1
+
+        if ($wingetpkg) {
+            $pkgs += "$wingetpkg (system)"
+        }
     }
 
-    $scooppkg = if (Get-Command -Name scoop -ErrorAction Ignore) {
-        $scoop = & scoop which scoop
-        $scoopdir = (Resolve-Path "$(Split-Path -Path $scoop)\..\..\..").Path
-        (Get-ChildItem -Path $scoopdir -Directory).Count - 1
+    if ("choco" -in $ShowPkgs -and (Get-Command -Name choco -ErrorAction Ignore)) {
+        $chocopkg = (& clist -l)[-1].Split(' ')[0] - 1
+
+        if ($chocopkg) {
+            $pkgs += "$chocopkg (choco)"
+        }
     }
 
-    $(if ($scooppkg) {
-        "$scooppkg (scoop)"
+    if ("scoop" -in $ShowPkgs) {
+        if (Test-Path "~/scoop/apps") {
+            $scoopdir = "~/scoop/apps"
+        } elseif (Get-Command -Name scoop -ErrorAction Ignore) {
+            $scoop = & scoop which scoop.ps1
+            $scoopdir = (Resolve-Path "$(Split-Path -Path $scoop)\..\..\..").Path
+        }
+
+        if ($scoopdir) {
+            $scooppkg = (Get-ChildItem -Path $scoopdir -Directory).Count - 1
+        }
+
+        if ($scooppkg) {
+            $pkgs += "$scooppkg (scoop)"
+        }
     }
-    if ($chocopkg) {
-        "$chocopkg (choco)"
-    }) -join ', '
-} else {
-    $disabled
+
+    foreach ($pkgitem in $CustomPkgs) {
+        if (Test-Path Function:"info_pkg_$pkgitem") {
+            $count = & "info_pkg_$pkgitem"
+            $pkgs += "$count ($pkgitem)"
+        }
+    }
+
+    if (-not $pkgs) {
+        $pkgs = "(none)"
+    }
+
+    return $pkgs -join ', '
 }
+
+$strings.pkgs = Get-Packages
 
 # reset terminal sequences and display a newline
 write-output "${e}[0m"
