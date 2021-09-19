@@ -378,7 +378,8 @@ $strings.connection = Get-Status
 # ===== IP Address =====
 function Get-LocalIPAddress {
     $address = '127.0.0.1'
-    if (Get-Status -ne 'Offline') {
+    $connection_state = Get-Status
+    if ($connection_state -ne "Offline") {
         $address = (Invoke-RestMethod ifconfig.me/ip).ToString()
     }
     return $address
