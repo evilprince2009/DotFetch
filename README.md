@@ -15,7 +15,6 @@ DotFetch is a command-line system information utility written in PowerShell for 
 Follow these simple steps to install DotFetch:
 
 - Set your execution policy to RemoteSigned by running `Set-ExecutionPolicy RemoteSigned` on an Administrative instance of PowerShell. This is required to run DotFetch.
-- Install `posh-git` from _[here](https://www.powershellgallery.com/packages/posh-git/)_ and `oh-my-posh` from _[here](https://www.powershellgallery.com/packages/oh-my-posh/)_. Installing these modules provided is required in order to work this script properly. From now you will be able to use the latest version of `posh-git` and `oh-my-posh` , legacy version dependencies are removed.
 - Download the files from provided link and extract them.
 - Put the `dotfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
