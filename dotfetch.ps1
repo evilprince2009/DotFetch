@@ -57,7 +57,7 @@ $is_pscore = if ($PSVersionTable.PSEdition.ToString() -eq 'Core') {
 $configdir = $env:XDG_CONFIG_HOME, "${env:USERPROFILE}\.config" | Select-Object -First 1
 $config = "${configdir}/dotfetch/config.ps1"
 
-$defaultconfig = ''
+$defaultconfig = 'https://github.com/evilprince2009/DotFetch/blob/main/lib/config.ps1'
 
 # ensure configuration directory exists
 if (-not (Test-Path -Path $config)) {
