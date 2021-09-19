@@ -19,17 +19,11 @@ Follow these simple steps to install DotFetch:
 - Put the `dotfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
 - Now open PowerShell & type `notepad $profile`.
-- Put below lines inside the file and save.
+- Put below line inside the file and save.
 
 ```
-Import-Module posh-git
-Import-Module oh-my-posh
-Set-PoshPrompt -Theme Iterm2
-Write-Host("                        =========> Wellcome || Windows PowerShell <=========")
 dotfetch
 ```
-
-You can run `Get-PoshThemes` command on terminal to see all available color themes change it here like `Set-PoshPrompt -Theme Iterm2` to `Set-PoshPrompt -Theme Paradox`.
 
 - Re-Launch PowerShell & you are good to go.
 
