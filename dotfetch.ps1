@@ -284,7 +284,6 @@ $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
     $disabled
 }
 
-
 # ===== DISK USAGE C =====
 $strings.disk_c = if ($configuration.HasFlag([Configuration]::Show_Disk)) {
     $disk = Get-CimInstance -ClassName Win32_LogicalDisk -Filter 'DeviceID="C:"'
@@ -301,7 +300,6 @@ $current_thread = New-Object Security.Principal.WindowsPrincipal([Security.Princ
 
 $strings.admin = $current_thread.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
 
-
 # ===== POWERSHELL VERSION =====
 $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
     "PowerShell v$($PSVersionTable.PSVersion)"
@@ -315,7 +313,6 @@ function Get-Status {
     if ((Test-NetConnection -WarningAction silentlycontinue).PingSucceeded) {
         $status = (Test-NetConnection -WarningAction silentlycontinue).InterfaceAlias
     }
-    
     return $status
 }
 
@@ -334,11 +331,9 @@ function Get-LocalIPAddress {
 $strings.ip_address = Get-LocalIPAddress
 
 # ===== Kernel Version =====
-
 $strings.kernel = [Environment]::OSVersion.Version.ToString()
 
 # ===== Battery =====
-
 function Connection-Status {
     $battery = Get-WmiObject -Class Win32_Battery | Select-Object -First 1
     $connection_buffer = $battery -ne $null -and $battery.BatteryStatus -eq 1
@@ -352,27 +347,6 @@ $connection_sign = Connection-Status
 $strings.battery = (Get-WmiObject win32_battery).estimatedChargeRemaining.ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
-# $strings.pkgs = if ($configuration.HasFlag([Configuration]::Show_Pkgs)) {
-#     $chocopkg = if (Get-Command -Name choco -ErrorAction Ignore) {
-#         (& clist -l)[-1].Split(' ')[0] - 1
-#     }
-
-#     $scooppkg = if (Get-Command -Name scoop -ErrorAction Ignore) {
-#         $scoop = & scoop which scoop
-#         $scoopdir = (Resolve-Path "$(Split-Path -Path $scoop)\..\..\..").Path
-#         (Get-ChildItem -Path $scoopdir -Directory).Count - 1
-#     }
-
-#     $(if ($scooppkg) {
-#         "$scooppkg (scoop)"
-#     }
-#     if ($chocopkg) {
-#         "$chocopkg (choco)"
-#     }) -join ', '
-# } else {
-#     $disabled
-# }
-
 function Get-Packages {
     $pkgs = @()
 
@@ -415,20 +389,18 @@ function Get-Packages {
             $pkgs += "$count ($pkgitem)"
         }
     }
-
     if (-not $pkgs) {
         $pkgs = "(none)"
     }
-
     return $pkgs -join ', '
 }
 
 $strings.pkgs = Get-Packages
 
-# reset terminal sequences and display a newline
+# Reset terminal sequences and display a newline
 write-output "${e}[0m"
 
-# add system info into an array
+# Add system info into an array
 $info = [collections.generic.list[string[]]]::new()
 $info.Add(@("", $strings.title))
 $info.Add(@("", $strings.dashes))
