@@ -334,7 +334,7 @@ $strings.ip_address = Get-LocalIPAddress
 $strings.kernel = [Environment]::OSVersion.Version.ToString()
 
 # ===== Battery =====
-function Connection-Status {
+function Get-ConnectionStatus {
     $battery = Get-WmiObject -Class Win32_Battery | Select-Object -First 1
     $connection_buffer = $battery -ne $null -and $battery.BatteryStatus -eq 1
     if ($connection_buffer) {
@@ -343,7 +343,7 @@ function Connection-Status {
         return 'Connected'
     }
 }
-$connection_sign = Connection-Status
+$connection_sign = Get-ConnectionStatus
 $strings.battery = (Get-WmiObject win32_battery).estimatedChargeRemaining.ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
@@ -422,7 +422,7 @@ $info.Add(@("Power", $strings.battery))
 $info.Add(@("",""))
 $info.Add(@("", $colorBar))
 
-# write system information in a loop
+# Write system information in a loop
 $counter = 0
 $logoctr = 0
 while ($counter -lt $info.Count) {
@@ -444,7 +444,7 @@ while ($counter -lt $info.Count) {
     }
 }
 
-# print the rest of the logo
+# Print the rest of the logo
 if ($logoctr -lt $img.Count) {
     while ($logoctr -le $img.Count) {
         " $($img[$logoctr])"
@@ -452,7 +452,7 @@ if ($logoctr -lt $img.Count) {
     }
 }
 
-# print a newline
+# Print a newline
 write-output ''
 
 #  ___ ___  ___
