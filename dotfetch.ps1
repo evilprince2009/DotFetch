@@ -309,7 +309,7 @@ $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
 
 # ===== CONNECTION CHECKER =====
 function Get-Status {
-    $status = "Offline"
+    $status = 'Offline'
     if ((Test-NetConnection -WarningAction silentlycontinue).PingSucceeded) {
         $status = (Test-NetConnection -WarningAction silentlycontinue).InterfaceAlias
     }
@@ -319,16 +319,16 @@ function Get-Status {
 $strings.connection = Get-Status
 
 # ===== IP Address =====
+
 function Get-LocalIPAddress {
     $address = '127.0.0.1'
-    $connection_state = Get-Status
-    if ($connection_state -ne "Offline") {
-        $address = (Invoke-RestMethod ifconfig.me/ip).ToString()
+    if ($strings.connection -ne 'Offline') {
+        $address = (Invoke-WebRequest -uri "https://api.ipify.org/").Content
     }
     return $address
 }
 
-$strings.ip_address = Get-LocalIPAddress
+$strings.ip_address = Get-LocalIpAddress
 
 # ===== Kernel Version =====
 $strings.kernel = [Environment]::OSVersion.Version.ToString()
