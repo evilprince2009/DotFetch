@@ -8,7 +8,11 @@ DotFetch is a command-line system information utility written in PowerShell for 
 
 ### Windows PowerShell
 
-![DotFetch](<https://github.com/evilprince2009/DotFetch/blob/main/Screenshot%20(55).png>)
+![DotFetch Win](https://github.com/evilprince2009/DotFetch/blob/main/Images/Windows%20Powershell.png)
+
+### PowerShell Core
+
+![DotFetch Core](https://github.com/evilprince2009/DotFetch/blob/main/Images/PowerShell%20Core.png)
 
 ### This is how it looks like
 
