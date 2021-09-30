@@ -459,4 +459,5 @@ write-output ''
 # | _| (_) | _|
 # |___\___/|_|
 #
+# Compatible with both Windows PowerShell & PowerShell Core
 # Author: Ibne Nahian (@evilprince2009)
