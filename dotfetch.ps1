@@ -344,7 +344,7 @@ function Get-ConnectionStatus {
     }
 }
 $connection_sign = Get-ConnectionStatus
-$strings.battery = (Get-WmiObject win32_battery).estimatedChargeRemaining.ToString() + "% , " + $connection_sign
+$strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining).ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
 function Get-Packages {
