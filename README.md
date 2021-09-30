@@ -26,7 +26,9 @@ Follow these simple steps to install DotFetch:
 - Download the files from provided link and extract them.
 - Put the `dotfetch.ps1` inside the `C:\Program Files\WindowsPowerShell\Scripts` directory. Don't worry , there is nothing malicious.
 - Put this directory `C:\Program Files\WindowsPowerShell\Scripts` into path under Environment Variables.
-- Now open PowerShell & type `notepad $profile`.
+- Now open PowerShell and:
+  -- If you are using Windows PowerShell, run `notepad $profile`.
+  -- If you are using PowerShell Core, run `notepad $Profile`.
 - Put below line inside the file and save.
 
 ```
