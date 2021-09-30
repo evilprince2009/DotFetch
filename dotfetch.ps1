@@ -137,7 +137,7 @@ else {
 }
 
 # ===== OS =====
-$strings.os = (Get-WmiObject -class Win32_OperatingSystem).Caption.ToString().TrimStart('Microsoft ')
+$strings.os = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption.ToString().TrimStart('Microsoft ')
 
 # ===== LOGO =====
 $img = if (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Windows 10') {
