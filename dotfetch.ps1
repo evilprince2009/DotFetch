@@ -454,10 +454,10 @@ if ($logoctr -lt $img.Count) {
 # Print a newline
 write-output ''
 
+# Compatible with both Windows PowerShell & PowerShell Core
+# Author: Ibne Nahian (@evilprince2009)
+#
 #  ___ ___  ___
 # | __/ _ \| __|
 # | _| (_) | _|
 # |___\___/|_|
-#
-# Compatible with both Windows PowerShell & PowerShell Core
-# Author: Ibne Nahian (@evilprince2009)
