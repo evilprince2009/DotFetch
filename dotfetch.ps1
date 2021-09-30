@@ -335,12 +335,11 @@ $strings.kernel = [Environment]::OSVersion.Version.ToString()
 
 # ===== Battery =====
 function Get-ConnectionStatus {
-    $battery = Get-WmiObject -Class Win32_Battery | Select-Object -First 1
-    $connection_buffer = $battery -ne $null -and $battery.BatteryStatus -eq 1
-    if ($connection_buffer) {
-        return 'Unplugged'
-    } else {
+    $charging_state = (Get-CimInstance win32_battery).batterystatus
+    if ($charging_state -eq 2) {
         return 'Connected'
+    } else {
+        return 'Unplugged'
     }
 }
 $connection_sign = Get-ConnectionStatus
