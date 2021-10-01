@@ -346,55 +346,24 @@ $connection_sign = Get-ConnectionStatus
 $strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining).ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
-function Get-Packages {
-    $pkgs = @()
 
-    if ("winget" -in $ShowPkgs -and (Get-Command -Name winget -ErrorAction Ignore)) {
-        $wingetpkg = (winget list | Where-Object {$_.Trim("`n`r`t`b-\|/ ").Length -ne 0} | Measure-Object).Count - 1
-
-        if ($wingetpkg) {
-            $pkgs += "$wingetpkg (system)"
-        }
+function Get-PackageManager {
+    $_pms = 'choco, winget, scoop'
+    if (-not (Get-Command -Name scoop -ErrorAction Ignore)) {
+        $_pms = $_pms.Replace(', scoop', '')
     }
-
-    if ("choco" -in $ShowPkgs -and (Get-Command -Name choco -ErrorAction Ignore)) {
-        $chocopkg = (& clist -l)[-1].Split(' ')[0] - 1
-
-        if ($chocopkg) {
-            $pkgs += "$chocopkg (choco)"
-        }
+    if (-not (Get-Command -Name choco -ErrorAction Ignore)) {
+        $_pms = $_pms.Replace('choco, ', '')
     }
+    
+    if (-not (Get-Command -Name winget -ErrorAction Ignore)) {
+        $_pms = $_pms.Replace(', winget', '')
+    } 
 
-    if ("scoop" -in $ShowPkgs) {
-        if (Test-Path "~/scoop/apps") {
-            $scoopdir = "~/scoop/apps"
-        } elseif (Get-Command -Name scoop -ErrorAction Ignore) {
-            $scoop = & scoop which scoop.ps1
-            $scoopdir = (Resolve-Path "$(Split-Path -Path $scoop)\..\..\..").Path
-        }
-
-        if ($scoopdir) {
-            $scooppkg = (Get-ChildItem -Path $scoopdir -Directory).Count - 1
-        }
-
-        if ($scooppkg) {
-            $pkgs += "$scooppkg (scoop)"
-        }
-    }
-
-    foreach ($pkgitem in $CustomPkgs) {
-        if (Test-Path Function:"info_pkg_$pkgitem") {
-            $count = & "info_pkg_$pkgitem"
-            $pkgs += "$count ($pkgitem)"
-        }
-    }
-    if (-not $pkgs) {
-        $pkgs = "(none)"
-    }
-    return $pkgs -join ', '
+    return $_pms
 }
 
-$strings.pkgs = Get-Packages
+$strings.pkgs = Get-PackageManager
 
 # Reset terminal sequences and display a newline
 write-output "${e}[0m"
