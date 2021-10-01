@@ -366,7 +366,7 @@ function Get-PackageManager {
 $strings.pkgs = Get-PackageManager
 
 # Reset terminal sequences and display a newline
-write-output "${e}[0m"
+Write-Output "${e}[0m"
 
 # Add system info into an array
 $info = [collections.generic.list[string[]]]::new()
