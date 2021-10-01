@@ -348,19 +348,24 @@ $strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -Ex
 # ===== PACKAGES =====
 
 function Get-PackageManager {
-    $_pms = 'choco, winget, scoop'
-    if (-not (Get-Command -Name scoop -ErrorAction Ignore)) {
-        $_pms = $_pms.Replace(', scoop', '')
+    $_pms = ''
+
+    if ((Get-Command -Name scoop -ErrorAction Ignore).Name -eq 'scoop.exe') {
+        $_pms += 'scoop '
     }
-    if (-not (Get-Command -Name choco -ErrorAction Ignore)) {
-        $_pms = $_pms.Replace('choco, ', '')
+    if ((Get-Command -Name winget -ErrorAction Ignore).Name -eq 'winget.exe') {
+        $_pms += 'winget '
     }
     
-    if (-not (Get-Command -Name winget -ErrorAction Ignore)) {
-        $_pms = $_pms.Replace(', winget', '')
+    if ((Get-Command -Name choco -ErrorAction Ignore).Name -eq 'choco.exe') {
+        $_pms += 'choco '
     } 
 
-    return $_pms
+    if ($_pms.Length -eq 0) {
+        return '(none)'
+    } else {
+        return $_pms.Replace(' ', ', ').TrimEnd(', ')
+    }
 }
 
 $strings.pkgs = Get-PackageManager
