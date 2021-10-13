@@ -18,6 +18,10 @@ DotFetch is a command-line system information utility written in PowerShell for 
 
 ![DotFetch Core - Hyper](https://github.com/evilprince2009/DotFetch/blob/main/Images/hyper-pscore.png)
 
+### PowerShell Core on Windows Console
+
+![DotFetch Core - Console](https://github.com/evilprince2009/DotFetch/blob/main/Images/Console%20PSCore.png)
+
 ### This is how it looks like
 
 ### [Download](https://github.com/evilprince2009/DotFetch) it here
