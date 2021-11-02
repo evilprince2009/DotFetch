@@ -89,7 +89,7 @@ if ($genconf.IsPresent) {
 # ===== VARIABLES =====
 $disabled = 'disabled'
 $strings = @{
-    ip_address = ''
+    ip_address  = ''
     dashes      = ''
     img         = ''
     title       = ''
@@ -309,9 +309,10 @@ $strings.pwsh = if ($configuration.HasFlag([Configuration]::Show_Pwsh)) {
 
 # ===== CONNECTION CHECKER =====
 function Get-Status {
+    $adaptor = (Test-NetConnection -WarningAction silentlycontinue)
     $status = 'Offline'
-    if ((Test-NetConnection -WarningAction silentlycontinue).PingSucceeded) {
-        $status = (Test-NetConnection -WarningAction silentlycontinue).InterfaceAlias
+    if ($adaptor.PingSucceeded) {
+        $status = $adaptor.InterfaceAlias
     }
     return $status
 }
