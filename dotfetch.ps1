@@ -347,7 +347,6 @@ $connection_sign = Get-ConnectionStatus
 $strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining).ToString() + "% , " + $connection_sign
 
 # ===== PACKAGES =====
-
 function Get-PackageManager {
     $_pms = ''
 
