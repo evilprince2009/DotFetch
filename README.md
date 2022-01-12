@@ -1,6 +1,6 @@
-## DotFetch
+# DotFetch
 
-### A command line utility for fetching system information
+## A command line utility for fetching system information
 
 DotFetch is a command-line system information utility written in PowerShell for Windows. DotFetch displays information about your operating system, software and hardware in an way similar to NeoFetch. DotFetch is basically partial NeoFetch clone written from scratch with the same ideology. The original _[NeoFetch](https://github.com/dylanaraps/neofetch)_ can be found here.
 
