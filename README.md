@@ -16,7 +16,7 @@ DotFetch is a command-line system information utility written in PowerShell for 
 
 ### PowerShell Core on Windows Terminal (Windows 11)
 
-![DotFetch Core Win XI](https://github.com/evilprince2009/DotFetch/blob/main/Images/PowerShell%20Core.png)
+![DotFetch Core Win XI](https://github.com/evilprince2009/DotFetch/blob/main/Images/PowerShell%20Core%20Win%2011.png)
 
 ### PowerShell Core on Hyper Terminal
 
