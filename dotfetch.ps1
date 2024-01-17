@@ -43,6 +43,19 @@ param(
 )
 
 $e = [char]0x1B
+$ee = "$e[0m"
+$es = "$ee$e[5;37m"
+$er = "$ee$e[1;31m"
+$eg = "$ee$e[1;32m"
+$eb = "$ee$e[1;34m"
+$ey = "$ee$e[1;33m"
+$et = "$ee$e[1;36m"
+$eh = "$ee$e[1;37;49m"
+$eby = "$ee$e[5;33m"
+$ebt = "$ee$e[5;36m"
+$ebg = "$ee$e[5;32m"
+$ebr = "$ee$e[5;31m"
+
 
 $colorBar = ('{0}[0;40m{1}{0}[0;41m{1}{0}[0;42m{1}{0}[0;43m{1}' +
             '{0}[0;44m{1}{0}[0;45m{1}{0}[0;46m{1}{0}[0;47m{1}' +
@@ -89,45 +102,45 @@ if ($genconf.IsPresent) {
 # ===== VARIABLES =====
 $disabled = 'disabled'
 $strings = @{
-    ip_address  = ''
-    dashes      = ''
-    img         = ''
-    title       = ''
-    os          = ''
-    hostname    = ''
-    username    = ''
-    computer    = ''
-    uptime      = ''
-    terminal    = ''
-    cpu         = ''
-    gpu         = ''
-    memory      = ''
-    disk_c      = ''
-    pwsh        = ''
-    pkgs        = ''
-    admin       = ''
-    connection  = ''
-    battery     = ''
-    kernel      = ''
+    ip_address = ''
+    dashes = ''
+    img = ''
+    title = ''
+    os = ''
+    hostname = ''
+    username = ''
+    computer = ''
+    uptime = ''
+    terminal = ''
+    cpu = ''
+    gpu = ''
+    memory = ''
+    disk_c = ''
+    pwsh = ''
+    pkgs = ''
+    admin = ''
+    connection = ''
+    battery = ''
+    kernel = ''
 }
 
 # ===== CONFIGURATION =====
 [Flags()]
 enum Configuration
 {
-    None          = 0
-    Show_Title    = 1
-    Show_Dashes   = 2
-    Show_OS       = 4
+    None = 0
+    Show_Title = 1
+    Show_Dashes = 2
+    Show_OS = 4
     Show_Computer = 8
-    Show_Uptime   = 16
+    Show_Uptime = 16
     Show_Terminal = 32
-    Show_CPU      = 64
-    Show_GPU      = 128
-    Show_Memory   = 256
-    Show_Disk     = 512
-    Show_Pwsh     = 1024
-    Show_Pkgs     = 2048
+    Show_CPU = 64
+    Show_GPU = 128
+    Show_Memory = 256
+    Show_Disk = 512
+    Show_Pwsh = 1024
+    Show_Pkgs = 2048
 }
 [Configuration]$configuration = if ((Get-Item -Path $config).Length -gt 0) {
     . $config
@@ -142,47 +155,47 @@ $strings.os = (Get-CimInstance -ClassName CIM_OperatingSystem).Caption.ToString(
 # ===== LOGO =====
 $img = if (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Windows 10') {
     @(
-            "                         ....::::       ",
-            "                 ....::::::::::::       ",
-            "        ....:::: ::::::::::::::::       ",
-            "....:::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            "................ ................       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            "'''':::::::::::: ::::::::::::::::       ",
-            "        '''':::: :EVILPRINCE2009:       ",
-            "                 ''''::::::::::::       ",
-            "                         ''''::::       ",
-            "                                        ",
-            "                                        ",
-            "                                        ";
+            "                         $ebg....::::$eh       ",
+            "                 $ebg....::::::::::::$eh       ",
+            "        $ebr....::::$eh $ebg::::::::::::::::$eh       ",
+            "$ebr....::::::::::::$eh $ebg::::::::::::::::$eh       ",
+            "$ebr::::::::::::::::$eh $ebg::::::::::::::::$eh       ",
+            "$ebr::::::::::::::::$eh $ebg::::::::::::::::$eh       ",
+            "$ebr::::::::::::::::$eh $ebg::::::::::::::::$eh       ",
+            "$ebr::::::::::::::::$eh $ebg::::::::::::::::$eh       ",
+            "$eby................$eh $ebt................$eh       ",
+            "$eby::::::::::::::::$eh $ebt::::::::::::::::$eh       ",
+            "$eby::::::::::::::::$eh $ebt::::::::::::::::$eh       ",
+            "$eby::::::::::::::::$eh $ebt::::::::::::::::$eh       ",
+            "$eby''''::::::::::::$eh $ebt::::::::::::::::$eh       ",
+            "        $eby''''::::$eh $ebt#EVILPRINCE2009#$eh       ",
+            "                 $ebt''''::::::::::::$eh       ",
+            "                         $ebt''''::::$eh       ",
+            "                                                      ",
+            "                                                      ",
+            "                                                      ";
     )
 } elseif (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Windows 11') {
     @(
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            "................ ................       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: :EVILPRINCE2009:       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            ":::::::::::::::: ::::::::::::::::       ",
-            "                                        ",
-            "                                        ",
-            "                                        ";
+        "$ebt·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebt·$ee $es·$ee",
+    "$eby·$ee $ebr################$eh$eby·$ee$ebg################$eh $ebr·$ee",
+    "$ebt·$ee $ebr################$eh$es·$ee$ebg################$eh $ebt·$ee",
+    "$ebg·$ee $ebr################$eh$ebr·$ee$ebg################$eh $eby·$ee",
+    "$ebr·$ee $ebr################$eh$ebg·$ee$ebg################$eh $ebg·$ee",
+    "$eby·$ee $ebr################$eh$ebt·$ee$ebg################$eh $eby·$ee",
+    "$ebt·$ee $ebr################$eh$eby·$ee$ebg################$eh $ebt·$ee",
+    "$ebg·$ee $ebr################$eh$es·$ee$ebg################$eh $ebg·$ee",
+    "$ebr·$ee $ebr################$eh$ebr·$ee$ebg################$eh $ebr·$ee",
+    "$eby·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $es·$ee",
+    "$ebr·$ee $eby################$eh$eby·$ee$ebt########v#######$eh $ebt·$ee",
+    "$eby·$ee $eby################$eh$es·$ee$ebt#A#####E#i######$eh $eby·$ee",
+    "$ebt·$ee $eby################$eh$ebr·$ee$ebt##n#######l#####$eh $ebg·$ee",
+    "$ebg·$ee $eby################$eh$ebg·$ee$ebt###o#######9####$eh $ebr·$ee",
+    "$ebr·$ee $eby################$eh$ebt·$ee$ebt####m#####0#####$eh $ebg·$ee",
+    "$eby·$ee $eby################$eh$eby·$ee$ebt#####a###0######$eh $eby·$ee",
+    "$ebt·$ee $eby################$eh$es·$ee$ebt######l#2#######$eh $ebt·$ee",
+    "$ebg·$ee $eby################$eh$ebr·$ee$ebt#######y########$eh $ebr·$ee",
+    "$ebt·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebt·$ee $es·$ee"
     )
 }
 else {
@@ -198,8 +211,9 @@ $strings.username = [Environment]::UserName
 
 # ===== TITLE =====
 $strings.title = if ($configuration.HasFlag([Configuration]::Show_Title)) {
-    "${e}[1;34m{0}${e}[0m@${e}[1;34m{1}${e}[0m" -f $strings['username', 'hostname']
-} else {
+    "${e}[1;37m{0}${e}[0m@${e}[1;34m{1}${e}[0m" -f $strings['username', 'hostname']
+}
+else {
     $disabled
 }
 
@@ -331,7 +345,7 @@ $strings.connection = Get-Status
 # ===== IP Address =====
 
 function Get-LocalIPAddress {
-    $address = "Couldn't detect"
+    $address = "127.0.0.1"
     if ($strings.connection -ne 'Offline') {
         $address = (Invoke-WebRequest -uri "https://api.ipify.org/").Content
     }
