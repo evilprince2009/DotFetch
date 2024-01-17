@@ -45,11 +45,6 @@ param(
 $e = [char]0x1B
 $ee = "$e[0m"
 $es = "$ee$e[5;37m"
-$er = "$ee$e[1;31m"
-$eg = "$ee$e[1;32m"
-$eb = "$ee$e[1;34m"
-$ey = "$ee$e[1;33m"
-$et = "$ee$e[1;36m"
 $eh = "$ee$e[1;37;49m"
 $eby = "$ee$e[5;33m"
 $ebt = "$ee$e[5;36m"
