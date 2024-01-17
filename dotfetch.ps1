@@ -394,7 +394,12 @@ $info.Add(@("Packages", $strings.pkgs))
 $info.Add(@("Shell", $strings.pwsh))
 $info.Add(@("Terminal", $strings.terminal))
 $info.Add(@("CPU", $strings.cpu))
-$info.Add(@("GPU", $strings.gpu))
+
+$gpu_count = 1
+foreach($card in $strings.gpu) {
+    $info.Add(@("GPU $gpu_count", $card))
+    $gpu_count++
+}
 $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
 $info.Add(@("Running as Admin", $strings.admin))
