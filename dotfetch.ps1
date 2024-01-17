@@ -417,6 +417,9 @@ foreach($card in $strings.gpu) {
     if ($card.ToLower() -Match "intel") {
         $info.Add(@("GPU (shared)", $card))
     }
+    if ($card.ToLower() -Match "amd") {
+        $info.Add(@("GPU (shared)", $card))
+    }
 }
 $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
