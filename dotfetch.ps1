@@ -409,10 +409,14 @@ $info.Add(@("Shell", $strings.pwsh))
 $info.Add(@("Terminal", $strings.terminal))
 $info.Add(@("CPU", $strings.cpu))
 
-$gpu_count = 1
+
 foreach($card in $strings.gpu) {
-    $info.Add(@("GPU $gpu_count", $card))
-    $gpu_count++
+    if ($card.ToLower() -Match "nvidia") {
+        $info.Add(@("GPU (dedicated)", $card))
+    }
+    if ($card.ToLower() -Match "intel") {
+        $info.Add(@("GPU (shared)", $card))
+    }
 }
 $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
