@@ -248,7 +248,7 @@ $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
 # ======= Refresh Rate =======
 
 function Get-RefreshRate {
-    return Get-CimInstance -ClassName Win32_VideoController | Select-Object -Property CurrentRefreshRate
+    return "$((Get-CimInstance -ClassName Win32_VideoController | Select-Object -Property CurrentRefreshRate).CurrentRefreshRate)Hz"
 }
 
 $strings.refresh_rate = Get-RefreshRate
