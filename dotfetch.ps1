@@ -117,6 +117,7 @@ $strings = @{
     connection = ''
     battery = ''
     kernel = ''
+    refresh_rate = ''
 }
 
 # ===== CONFIGURATION =====
@@ -244,6 +245,13 @@ $strings.uptime = if ($configuration.HasFlag([Configuration]::Show_Uptime)) {
     $disabled
 }
 
+# ======= Refresh Rate =======
+
+function Get-RefreshRate {
+    return Get-CimInstance -ClassName Win32_VideoController | Select-Object -Property CurrentRefreshRate
+}
+
+$strings.refresh_rate = Get-RefreshRate
 
 # ===== TERMINAL =====
 # this section works by getting
@@ -412,6 +420,7 @@ foreach($card in $strings.gpu) {
         $info.Add(@("GPU (shared)", $card))
     }
 }
+$info.Add(@("Refresh Rate", $strings.refresh_rate))
 $info.Add(@("Memory", $strings.memory))
 $info.Add(@("Disk (C:)", $strings.disk_c))
 $info.Add(@("Running as Admin", $strings.admin))
