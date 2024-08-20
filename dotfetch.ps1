@@ -183,14 +183,14 @@ $img = if (-not $image -and -not $noimage.IsPresent -and $strings.os -Match 'Win
     "$ebg·$ee $ebr################$eh$es·$ee$ebg################$eh $ebg·$ee",
     "$ebr·$ee $ebr################$eh$ebr·$ee$ebg################$eh $ebr·$ee",
     "$eby·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $ebt·$ee $eby·$ee $ebr·$ee $ebg·$ee $es·$ee",
-    "$ebr·$ee $eby################$eh$eby·$ee$ebt##l#############$eh $ebt·$ee",
-    "$eby·$ee $eby################$eh$es·$ee$ebt#A#l############$eh $eby·$ee",
-    "$ebt·$ee $eby################$eh$ebr·$ee$ebt##n#a###########$eh $ebg·$ee",
-    "$ebg·$ee $eby################$eh$ebg·$ee$ebt###o#h#####9####$eh $ebr·$ee",
-    "$ebr·$ee $eby################$eh$ebt·$ee$ebt####m#####0#####$eh $ebg·$ee",
-    "$eby·$ee $eby################$eh$eby·$ee$ebt#####a###0######$eh $eby·$ee",
-    "$ebt·$ee $eby################$eh$es·$ee$ebt######l#2#######$eh $ebt·$ee",
-    "$ebg·$ee $eby################$eh$ebr·$ee$ebt#######y########$eh $ebr·$ee",
+    "$ebr·$ee $eby################$eh$eby·$ee$ebt################$eh $ebt·$ee",
+    "$eby·$ee $eby################$eh$es·$ee$ebt################$eh $eby·$ee",
+    "$ebt·$ee $eby################$eh$ebr·$ee$ebt################$eh $ebg·$ee",
+    "$ebg·$ee $eby################$eh$ebg·$ee$ebt################$eh $ebr·$ee",
+    "$ebr·$ee $eby################$eh$ebt·$ee$ebt################$eh $ebg·$ee",
+    "$eby·$ee $eby################$eh$eby·$ee$ebt################$eh $eby·$ee",
+    "$ebt·$ee $eby################$eh$es·$ee$ebt################$eh $ebt·$ee",
+    "$ebg·$ee $eby################$eh$ebr·$ee$ebt################$eh $ebr·$ee",
     "$ebt·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebr·$ee $eby·$ee $ebt·$ee $ebg·$ee $ebt·$ee $es·$ee"
     )
 }
@@ -225,7 +225,7 @@ $strings.dashes = if ($configuration.HasFlag([Configuration]::Show_Dashes)) {
 # ===== COMPUTER =====
 $strings.computer = if ($configuration.HasFlag([Configuration]::Show_Computer)) {
     $compsys = Get-CimInstance -ClassName Win32_ComputerSystem
-    '{0} {1}' -f $compsys.Manufacturer, $compsys.Model
+    '{0} on host {1}' -f $compsys.Name, $compsys.Model
 } else {
     $disabled
 }
@@ -294,8 +294,7 @@ $strings.gpu = if ($configuration.HasFlag([Configuration]::Show_GPU)) {
 # ===== MEMORY =====
 $strings.memory = if ($configuration.HasFlag([Configuration]::Show_Memory)) {
     $m = Get-CimInstance -ClassName Win32_OperatingSystem
-    $total = [math]::floor(($m.TotalVisibleMemorySize / 1mb))
-    $used = [math]::floor((($m.FreePhysicalMemory - $total) / 1mb))
+    $used = [math]::floor((($m.TotalVisibleMemorySize - $m.FreePhysicalMemory) / 1mb))
     ("{0}GiB / {1}GiB" -f $used,$total)
 } else {
     $disabled
@@ -370,8 +369,12 @@ function Get-ConnectionStatus {
     }
 }
 $connection_sign = Get-ConnectionStatus
-$strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining).ToString() + "% , " + $connection_sign
-
+try {
+    $strings.battery = (Get-CimInstance -ClassName Win32_Battery | Select-Object -ExpandProperty EstimatedChargeRemaining).ToString() + "% , " + $connection_sign
+}
+catch {
+    $strings.battery = 'PC'
+}
 # ===== PACKAGES =====
 function Get-PackageManager {
     $_pms = ''
